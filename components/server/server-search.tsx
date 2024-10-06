@@ -33,7 +33,7 @@ export const ServerSearch = ({
 	const params = useParams();
 	
 	useEffect(() => {
-		const down = (e: KeyboardEvent) => {
+		const down = (e: globalThis.KeyboardEvent) => {
 			if(e.key === "k" && (e.metaKey || e.ctrlKey)){
 				e.preventDefault();
 				setOpen((open) => !open);

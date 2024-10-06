@@ -13,7 +13,7 @@ import { ServerSection } from "./server-section";
 import { ServerChannel } from "./server-channel";
 import { ServerMember } from "./server-member";
 
-interface ServerSidebarProps {
+interface ServerChannelsSidebarProps {
 	serverId: string
 }
 
@@ -29,7 +29,7 @@ const roleIconMap = {
 	[MemberRole.ADMIN]: <ShieldAlert className="mr-2 h-4 w-4 text-rose-500"/>,
 }
 
-export const ServerSidebar = async ({serverId} : ServerSidebarProps) => {
+export const ServerChannelsSidebar = async ({serverId} : ServerChannelsSidebarProps) => {
 	const profile = await currentProfile();
 
 	if(!profile) {
@@ -60,7 +60,7 @@ export const ServerSidebar = async ({serverId} : ServerSidebarProps) => {
 	const textChannels = server?.channels.filter((channel) => channel.type === ChannelType.TEXT);
 	const audioChannels = server?.channels.filter((channel) => channel.type === ChannelType.AUDIO);
 	const vidoeChannels = server?.channels.filter((channel) => channel.type === ChannelType.VIDEO);
-	const members = server?.members.filter((member) => member.profileId !== profile.id);
+	const members = server?.members.filter((member) => member.profile.id !== profile.id);
 
 	if(!server){
 		return redirect("/");
@@ -173,25 +173,6 @@ export const ServerSidebar = async ({serverId} : ServerSidebarProps) => {
 									channel={channel}
 									server={server}
 									role={role}
-								/>
-							))}
-						</div>
-					</div>
-				)}
-				{!!members?.length && (
-					<div className="mb-2">
-						<ServerSection
-							sectionType="members"
-							role={role}
-							label="Members"
-							server={server}
-						/>
-						<div className="space-y-[2px]">
-							{members.map((member) => (
-								<ServerMember
-									key={member.id}
-									member={member}
-									server={server}
 								/>
 							))}
 						</div>
