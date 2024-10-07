@@ -29,8 +29,8 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="discord-theme"
           >
-            <ModalProvider /> {/* TODO: dont work */}
-            {children}
+          <ModalProvider />
+          {children}
           </ThemeProvider>
         </body>
       </html>
