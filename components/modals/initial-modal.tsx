@@ -87,19 +87,19 @@ export const InitialModal = () => {
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
                 <FormField
-                control={form.control}
-                name="imageUrl"
-                render={({field}) => (
-                  <FormItem>
-                    <FormControl>
-                      <FileUpload
-                        endPoint="serverImage"
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
+                  control={form.control}
+                  name="imageUrl"
+                  render={({field}) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endPoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
                 />
               </div>
               <FormField

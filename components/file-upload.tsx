@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { FileIcon, X } from "lucide-react";
 import Image from "next/image";
 
@@ -13,9 +13,9 @@ interface FileUploadProps {
 }
 
 export const FileUpload = ({ onChange, value, endPoint }: FileUploadProps) => {
-  // TODO render pdf and image
+  const [fileType, setFileType] = useState("");
 
-  if (value) { // img
+  if (value && fileType.startsWith("image")) {
     return (
       <div className="relative h-20 w-20">
         <Image fill src={value} alt="Upload" className="rounded-full" />
@@ -30,11 +30,15 @@ export const FileUpload = ({ onChange, value, endPoint }: FileUploadProps) => {
     );
   }
 
-  if(value) { //pdf
+  if(value && !fileType.startsWith("image")) {
     return (
       <div className="relative flex items-center p-2 mt-2 rounded-md bg-backgrounded/10">
         <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400"/>
-        <a href={value} target="_blank" rel="noopener noreferrer" className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline">
+        <a
+          href={value}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline break-all">
           {value}
         </a>
         <button
@@ -52,6 +56,7 @@ export const FileUpload = ({ onChange, value, endPoint }: FileUploadProps) => {
     <UploadDropzone
       endpoint={endPoint}
       onClientUploadComplete={(res) => {
+        setFileType(res?.[0].type);
         onChange(res?.[0].url);
       }}
       onUploadError={(error: Error) => {
