@@ -13,10 +13,11 @@ import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { ActionTooltip } from "@/components/action-tooltip";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
+import { getFileType, getUrl } from "@/lib/get-url";
 
 interface ChatItemProps {
   id: string;
@@ -102,15 +103,16 @@ export const ChatItem = ({
     });
   }, [content]);
 
-  const fileType = fileUrl; // TODO dont have filetType in url
+  const fileType = fileUrl && getFileType(fileUrl);
+  const src = fileUrl && getUrl(fileUrl);
 
   const isAdmin = currentMember.role === MemberRole.ADMIN;
   const isModerator = currentMember.role === MemberRole.MODERATOR;
   const isOwner = currentMember.id === member.id;
   const canDeleteMesage = !deleted && (isAdmin || isModerator || isOwner);
   const canEditMessage = !deleted && isOwner && !fileUrl;
-  const isPdf = fileType === "pdf" && fileUrl;
-  const isImage = !isPdf && fileUrl;
+  const isPdf = fileType === "pdf" && src;
+  const isImage = !isPdf && src;
 
   return (
     <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
@@ -134,13 +136,13 @@ export const ChatItem = ({
           </div>
           {isImage && (
             <a
-              href={fileUrl}
+              href={src}
               target="_blank"
               rel="noopener norefer"
               className="relative aspect-square rounded-md mt-2 overflow-hidden border flex items-center bg-secondary h-48 w-48"
             >
               <Image
-                src={fileUrl}
+                src={src}
                 alt={content}
                 fill
                 className="object-cover"
@@ -151,7 +153,7 @@ export const ChatItem = ({
             <div className="relative flex items-center p-2 mt-2 rounded-md bg-backgrounded/10">
               <FileIcon className="h-10 w-10 fill-indigo-200 stroke-indigo-400" />
               <a
-                href={fileUrl}
+                href={src}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="ml-2 text-sm text-indigo-500 dark:text-indigo-400 hover:underline break-all"
@@ -160,7 +162,7 @@ export const ChatItem = ({
               </a>
             </div>
           )}
-          {!fileUrl && !isEditing && (
+          {!src && !isEditing && (
             <p
               className={cn(
                 "text-sm test-zinc-600 dark:text-zinc-300",
@@ -176,7 +178,7 @@ export const ChatItem = ({
               )}
             </p>
           )}
-          {!fileUrl && isEditing && (
+          {!src && isEditing && (
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+import { getUrl } from "@/lib/get-url";
 import { ActionTooltip } from "@/components/action-tooltip";
 
 interface NavigarionItemProps {
@@ -15,6 +16,8 @@ interface NavigarionItemProps {
 export const NavigationItem = ({ id, imageUrl, name }: NavigarionItemProps) => {
   const params = useParams();
   const router = useRouter();
+
+  const url = imageUrl && getUrl(imageUrl) || "";
 
   const onClick = () => {
     router.push(`/servers/${id}`);
@@ -37,7 +40,7 @@ export const NavigationItem = ({ id, imageUrl, name }: NavigarionItemProps) => {
               "bg-primary/10 text-primary rounded-[16px]"
           )}
         >
-          <Image fill src={imageUrl} alt="Channel" />
+          <Image fill src={url} alt="Channel" />
         </div>
       </button>
     </ActionTooltip>
