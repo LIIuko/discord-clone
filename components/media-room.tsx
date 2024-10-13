@@ -27,9 +27,6 @@ interface MediaRoomProps {
 
 export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
   const { user } = useUser();
-  // TODO: get user input for room and name
-  const room = "quickstart-room";
-  const name = "quickstart-user";
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -61,8 +58,8 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
 
   return (
     <LiveKitRoom
-      video={true}
-      audio={true}
+      video={video}
+      audio={audio}
       token={token}
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
       data-lk-theme="default"
@@ -70,8 +67,6 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
 			connect={true}
     >
       <VideoConference />
-      {/* <RoomAudioRenderer />
-      <ControlBar /> */}
     </LiveKitRoom>
   );
 };

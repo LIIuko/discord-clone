@@ -8,9 +8,9 @@ export async function PATCH(
 	{ params }: { params: { serverId: string } }
 ) {
 	try{
-		const profile = currentProfile();
+		const profile = await currentProfile();
 
-		if(!profile){
+		if(!profile || typeof profile === "function"){
 			return new NextResponse("Unauthorized", { status: 401 });
 		}
 
